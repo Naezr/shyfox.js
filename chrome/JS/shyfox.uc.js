@@ -79,7 +79,7 @@
     // add navbar to sidebar
     let navbar = doc.getElementById("nav-bar");
     sidebarContainer.insertBefore(navbar, sidebarContainer.firstChild);
-    doCompactNavbar(doc);
+    loading.then(() => doCompactNavbar(doc));
 
     // initial sidebar position
     loading.then(() => sidebarPosition(UC_API.Prefs.get("sidebar.position_start").value));
