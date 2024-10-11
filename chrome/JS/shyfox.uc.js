@@ -119,6 +119,7 @@
     container.remove();
   }
 
+  // handle sidebar position (true = left, false = right)
   function sidebarPosition(value) {
     UC_API.Windows.forEach((doc, window) => {
       if (doc.documentElement.getAttribute("chromehidden") != "") return; // return if window is not full
