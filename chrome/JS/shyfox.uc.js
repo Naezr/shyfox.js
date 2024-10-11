@@ -51,6 +51,7 @@
           for (let node of mutation.addedNodes) {
             if (node.id === "customization-container") {
               browser.appendChild(node);
+              sidebarPosition(UC_API.Prefs.get("sidebar.position_start").value);
               observer.disconnect();
               console.log("customization moved");
               break;
@@ -86,7 +87,6 @@
 
     // listen sidebar position
     UC_API.Prefs.addListener("sidebar.position_start", (obj, pref) => {
-      console.log(`${pref} changed to ${obj.value}`);
       sidebarPosition(obj.value);
     });
   }
@@ -127,6 +127,7 @@
         $("sidebar-container-container").style.order = "1";
         $("sidebar-container-container").removeAttribute("positionend");
         $("tabbrowser-tabbox").style.order = "2";
+        if ($("customization-container")) $("customization-container").style.order = "2";
         $("sidebar-container").style.order = "1";
         $("sidebar-container-splitter").style.order = "2";
         $("sidebar-container-splitter").removeAttribute("revert");
@@ -136,6 +137,7 @@
         $("sidebar-container-container").style.order = "2";
         $("sidebar-container-container").setAttribute("positionend", "");
         $("tabbrowser-tabbox").style.order = "1";
+        if ($("customization-container")) $("customization-container").style.order = "1";
         $("sidebar-container").style.order = "2";
         $("sidebar-container-splitter").style.order = "1";
         $("sidebar-container-splitter").setAttribute("revert", "");
@@ -162,9 +164,6 @@
     function setSidebarWidth(width) {
       splitterTarget.style.width = width + "px";
       splitterTarget.parentNode.style.setProperty("--sidebar-width", width + "px");
-      if (doc.documentElement.getAttribute("customizing") === null) { // only if not in customization
-        CustomizableUI.dispatchToolboxEvent("aftercustomization", {}, window); // check navbar for overflow
-      }
     }
 
     splitter.addEventListener("mousedown", (e) => {
@@ -186,11 +185,15 @@
     });
 
     doc.documentElement.addEventListener("mouseup", () => {
+      if (!isDragging) return;
       isDragging = false;
       splitter.removeAttribute("dragging");
       docElStyle.removeProperty("pointer-events"); // undo prevent flickering
       docElStyle.removeProperty("cursor");
       UC_API.Prefs.set("sidebar-container.width", width); // save sidebar width
+      if (doc.documentElement.getAttribute("customizing") === null) { // only if not in customization
+        CustomizableUI.dispatchToolboxEvent("aftercustomization", {}, window); // check navbar for overflow
+      }
     });
   }
 

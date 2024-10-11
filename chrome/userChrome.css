@@ -9,15 +9,20 @@
 
   --toolbar-start-end-padding: 5px !important;
   --bookmarks-toolbar-overlapping-browser-height: 0px !important;
+  
+  --general-margin: 10px;
+  --general-toolbar-height: 40px;
+  --panel-outline: 0.01px solid var(--chrome-content-separator-color);
 }
 
-:root[chromehidden=""] #tabbrowser-tabbox {
+/* main content */
+:root[chromehidden=""] :is(#tabbrowser-tabbox, #customization-container) {
   min-width: 200px !important;
-  outline: 0.01px solid var(--chrome-content-separator-color) !important;
-  margin: 10px !important;
-  border-radius: 15px !important;
+  outline: var(--panel-outline) !important;
+  margin: var(--general-margin) !important;
+  border-radius: var(--panel-border-radius) !important;
+  box-shadow: var(--content-area-shadow) !important;
   overflow: hidden !important;
-  order: 3
 }
 
 /* main box height */
@@ -30,7 +35,7 @@
 #sidebar-container-container {
   display: flex;
   flex-direction: row;
-  margin-block: 5px;
+  margin-block: var(--general-margin);
 }
 
 /* main sidebar container styles */
@@ -54,12 +59,31 @@
   flex: 1;
   flex-direction: row;
   max-height: calc(100% - 80px);
-  overflow: hidden;
 }
 
 #sidebar-container-container[positionend] #sidebar-content {
   justify-content: right;
 }
+
+#sidebar-box{
+  padding: 0px !important;
+  border-radius: var(--panel-border-radius) !important;
+  outline: var(--panel-outline) !important;
+  box-shadow: var(--content-area-shadow) !important;
+  width: auto !important;
+}
+
+#sidebar{
+  border: none !important;
+  box-shadow: none !important;
+}
+
+/* rm backgrounds */
+.browser-toolbar,
+#sidebar-main, #sidebar-box{
+  background: transparent !important;
+}
+
 
 /* splitter */
 #sidebar-splitter {
@@ -70,18 +94,19 @@
 #sidebar-container-splitter {
   display: flex;
   -moz-window-dragging: no-drag;
-  width: 6px;
+  width: 5px;
 
   &:not([revert]) {
     margin-right: -6px;
+    margin-left: 5px
   }
 
   &[revert] {
     margin-left: -6px;
+    margin-right: 5px;
   }
 
   margin-block: 5px;
-  z-index: 999;
   border-radius: 100px;
   cursor: ew-resize;
   transition: background .5s ease;
@@ -116,7 +141,7 @@
     flex: 1 !important;
     z-index: 1 !important;
     border: none !important;
-    height: 40px !important;
+    height: var(--general-toolbar-height) !important;
 
     .titlebar-buttonbox-container,
     .titlebar-spacer {
@@ -125,10 +150,11 @@
   }
 
   #urlbar-container {
-    --urlbar-container-height: 40px !important;
+    --urlbar-container-height: var(--general-toolbar-height) !important;
+    --urlbar-height: 32px !important;
 
     width: auto !important;
-    height: 40px !important;
+    height: var(--urlbar-container-height) !important;
   }
 
   #urlbar[breakout][breakout-extend] {
@@ -140,6 +166,12 @@
   }
 }
 
+#sidebar-container-container[positionend] #navbar-container 
+#urlbar[breakout][breakout-extend]{
+  right: 0px !important;
+  left: auto !important;
+}
+
 /* customizing page styles */
 :root[customizing] {
   #vertical-tabs {
@@ -149,6 +181,7 @@
   #browser {
     visibility: visible !important;
     display: flex !important;
+    flex-direction: row;
   }
 
   #tabbrowser-tabbox {
@@ -156,7 +189,6 @@
   }
 
   #customization-container {
-    order: 3 !important;
     display: flex !important;
     flex: 1 !important;
 
