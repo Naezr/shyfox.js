@@ -1,0 +1,72 @@
+#TabsToolbar {
+  --tabs-toolbar-height: 40px;
+  --tabs-toolbar-margin: 4px;
+  --tabs-toolbar-button-size: calc(var(--tabs-toolbar-height) - var(--tabs-toolbar-margin) * 2);
+
+  --tabstrip-inner-border: none !important;
+
+  max-height: var(--tabs-toolbar-height) !important;
+
+  #TabsToolbar-customization-target>*:not(toolbarspring) {
+    height: var(--tabs-toolbar-height) !important;
+  }
+
+  #TabsToolbar-customization-target {
+    min-height: 100% !important;
+    height: auto !important;
+
+    &>toolbarbutton {
+      height: var(--tabs-toolbar-height) !important;
+
+      &> :is(.toolbarbutton-icon, .toolbarbutton-badge-stack) {
+        width: var(--tabs-toolbar-button-size) !important;
+        height: var(--tabs-toolbar-button-size) !important;
+        padding: calc(var(--tabs-toolbar-margin) * 2) !important;
+        margin: 0px !important;
+      }
+    }
+  }
+
+  #tabbrowser-tabs {
+    height: var(--tabs-toolbar-height) !important;
+    padding: 0px !important;
+
+    .tabbrowser-tab {
+      .tab-background {
+        margin: var(--tabs-toolbar-margin) 0px !important;
+        height: var(--tabs-toolbar-button-size) !important;
+        min-height: var(--tabs-toolbar-button-size) !important;
+      }
+    }
+
+    .tabbrowser-tab[pinned] {
+      padding: 0px !important;
+
+      &,
+      .tab-stack {
+        width: var(--tabs-toolbar-size) !important;
+      }
+
+      .tab-background {
+        width: var(--tabs-toolbar-button-size) !important;
+        min-width: var(--tabs-toolbar-button-size) !important;
+        margin: var(--tabs-toolbar-margin) !important;
+      }
+
+      .tab-content {
+        align-content: center !important;
+        justify-content: center !important;
+      }
+
+      .tab-label-container {
+        display: none !important;
+      }
+    }
+  }
+
+  #TabsToolbar-customization-target #personal-bookmarks {
+    margin-block: var(--tabs-toolbar-margin) !important;
+    height: var(--tabs-toolbar-button-size) !important;
+  }
+
+}

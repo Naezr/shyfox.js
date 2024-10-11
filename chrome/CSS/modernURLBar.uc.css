@@ -1,0 +1,40 @@
+/* ==UserScript==
+// @description    Modern URL bar stylesheets
+// @usefileuri
+// @name    Modern URL bar
+// ==/UserScript==*/
+
+#shyUrlBox {
+  align-content: center;
+  background-color: var(--urlbar-box-bgcolor);
+  color: var(--urlbar-box-text-color);
+  padding-inline: 8px;
+  border-radius: var(--urlbar-icon-border-radius);
+
+  &:hover:not([open]) {
+    background-color: var(--urlbar-box-hover-bgcolor);
+    color: var(--urlbar-box-hover-text-color);
+  }
+}
+
+#shyLabelBox {
+  flex: 1;
+  overflow: hidden;
+  margin-inline: 8px;
+  align-content: center;
+  text-align: center;
+  white-space: nowrap;
+  mask-image: linear-gradient(to left, transparent, black 3ch) !important;
+}
+
+#urlbar-input[inactive]:not(:focus-within) {
+  max-width: 0px !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+#shyUrlBox:is([empty], [null]),
+#shyUrlBox[null]~#shyLabelBox,
+#urlbar:focus-within :is(#shyUrlBox, #shyLabelBox) {
+  visibility: collapse;
+}

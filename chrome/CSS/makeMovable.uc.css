@@ -1,0 +1,31 @@
+/* ==UserScript==
+// @description    Make movable stylesheets
+// @usefileuri
+// @name    Make movable
+// ==/UserScript==*/
+
+:root[chromehidden=""] {
+  #PanelUI-menu-button {
+    padding-inline: 0px !important;
+  }
+
+  #PanelUI-button {
+    padding-inline-end: var(--toolbar-start-end-padding) !important;
+
+    &>*:not([open]) {
+      max-width: 0px !important;
+      opacity: 0 !important;
+      pointer-events: none !important;
+    }
+  }
+
+  #wrapper-movable-extensions-button,
+  #wrapper-movable-menu-button {
+    align-items: center !important;
+
+    &>toolbaritem {
+      width: calc(2 * var(--toolbarbutton-inner-padding) + 16px);
+      height: calc(2 * var(--toolbarbutton-inner-padding) + 16px);
+    }
+  }
+}

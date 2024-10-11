@@ -1,0 +1,203 @@
+* {
+  --tab-border-radius: 10px !important;
+  --toolbarbutton-border-radius: 10px !important;
+  --arrowpanel-menuitem-border-radius: 10px !important;
+  --button-border-radius: 10px !important;
+  --border-radius-small: 10px !important;
+  --arrowpanel-border-radius: 15px !important;
+  --panel-border-radius: 15px !important;
+
+  --toolbar-start-end-padding: 5px !important;
+  --bookmarks-toolbar-overlapping-browser-height: 0px !important;
+}
+
+:root[chromehidden=""] #tabbrowser-tabbox {
+  min-width: 200px !important;
+  outline: 0.01px solid var(--chrome-content-separator-color) !important;
+  margin: 10px !important;
+  border-radius: 15px !important;
+  overflow: hidden !important;
+  order: 3
+}
+
+/* main box height */
+:root[chromehidden=""] #navigator-toolbox {
+  height: 100% !important;
+  border: none !important;
+}
+
+/* mainest container styles */
+#sidebar-container-container {
+  display: flex;
+  flex-direction: row;
+  margin-block: 5px;
+}
+
+/* main sidebar container styles */
+#sidebar-container {
+  display: flex;
+  flex-direction: column;
+  max-width: 600px !important;
+  min-width: 200px !important;
+  height: 100%;
+
+  &>* {
+    width: inherit !important;
+    min-width: 200px !important;
+    max-width: 100% !important;
+  }
+}
+
+/* sidebar content box styles */
+#sidebar-content {
+  display: flex;
+  flex: 1;
+  flex-direction: row;
+  max-height: calc(100% - 80px);
+  overflow: hidden;
+}
+
+#sidebar-container-container[positionend] #sidebar-content {
+  justify-content: right;
+}
+
+/* splitter */
+#sidebar-splitter {
+  visibility: collapse !important;
+  display: none !important;
+}
+
+#sidebar-container-splitter {
+  display: flex;
+  -moz-window-dragging: no-drag;
+  width: 6px;
+
+  &:not([revert]) {
+    margin-right: -6px;
+  }
+
+  &[revert] {
+    margin-left: -6px;
+  }
+
+  margin-block: 5px;
+  z-index: 999;
+  border-radius: 100px;
+  cursor: ew-resize;
+  transition: background .5s ease;
+  background: transparent;
+
+  &:is(:hover, [dragging]) {
+    background: AccentColor;
+  }
+}
+
+/* sidebars width */
+:is(#sidebar-box,
+  #sidebar-main:has(*[expanded]),
+  sidebar-main[expanded],
+):not([hidden]) {
+  max-width: unset !important;
+  min-width: 0px !important;
+  display: flex !important;
+  flex: 1 !important;
+}
+
+.wrapper:has(.tools-and-extensions) {
+  max-width: unset !important;
+  min-width: 0px !important;
+  width: 100% !important;
+}
+
+/* navbar in sidebar styles */
+#navbar-container {
+  #nav-bar {
+    display: flex !important;
+    flex: 1 !important;
+    z-index: 1 !important;
+    border: none !important;
+    height: 40px !important;
+
+    .titlebar-buttonbox-container,
+    .titlebar-spacer {
+      display: none !important;
+    }
+  }
+
+  #urlbar-container {
+    --urlbar-container-height: 40px !important;
+
+    width: auto !important;
+    height: 40px !important;
+  }
+
+  #urlbar[breakout][breakout-extend] {
+    min-width: 400px !important;
+  }
+  
+  toolbarspring, toolbarpaletteitem:has(toolbarspring){
+    max-width: unset !important;
+  }
+}
+
+/* customizing page styles */
+:root[customizing] {
+  #vertical-tabs {
+    min-width: 0px !important;
+  }
+
+  #browser {
+    visibility: visible !important;
+    display: flex !important;
+  }
+
+  #tabbrowser-tabbox {
+    display: none !important;
+  }
+
+  #customization-container {
+    order: 3 !important;
+    display: flex !important;
+    flex: 1 !important;
+
+    max-width: unset !important;
+    min-width: 0px !important;
+  }
+
+  #customization-panel-container,
+  #customization-palette-container {
+    width: 50% !important;
+    min-width: 50% !important;
+    max-width: 50% !important;
+  }
+
+  #navbar-container #urlbar-container {
+    pointer-events: none !important;
+  }
+
+  #sidebar {
+    pointer-events: none !important;
+    filter: grayscale(100%) !important;
+    opacity: .6;
+  }
+
+}
+
+/*
+#sidebar-container-container{
+  position: fixed;
+  z-index: 1;
+  transition: all .3s ease;
+  &:not(:hover){ transition-delay: 1s }
+  left: 0px;
+  
+  background: var(--arrowpanel-background);
+  
+  top: 50px;
+  height: 700px;
+  
+  &:not(:hover, [dragging], :has(:not(tab)[open]) ){
+    left: calc(5px - var(--sidebar-width) );
+    opacity: 0;
+  }
+}
