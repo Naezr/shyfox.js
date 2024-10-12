@@ -7,9 +7,8 @@
   --arrowpanel-border-radius: 15px !important;
   --panel-border-radius: 15px !important;
 
-  --toolbar-start-end-padding: 5px !important;
   --bookmarks-toolbar-overlapping-browser-height: 0px !important;
-  
+
   --general-margin: 10px;
   --general-toolbar-height: 40px;
   --panel-outline: 0.01px solid var(--chrome-content-separator-color);
@@ -36,9 +35,14 @@
   display: flex;
   flex-direction: row;
   margin-block: var(--general-margin);
-  
-  &:not([positionend]){ margin-left: var(--general-margin) }
-  &[positionend]{ margin-right: var(--general-margin) }
+
+  &:not([positionend]) {
+    margin-left: var(--general-margin)
+  }
+
+  &[positionend] {
+    margin-right: var(--general-margin)
+  }
 }
 
 /* main sidebar container styles */
@@ -48,7 +52,7 @@
   max-width: 600px !important;
   min-width: 200px !important;
   height: 100%;
-  
+
   outline: 1px solid red;
 
   &>* {
@@ -70,7 +74,7 @@
   justify-content: right;
 }
 
-#sidebar-box{
+#sidebar-box {
   padding: 0px !important;
   border-radius: var(--panel-border-radius) !important;
   outline: var(--panel-outline) !important;
@@ -78,14 +82,15 @@
   width: auto !important;
 }
 
-#sidebar{
+#sidebar {
   border: none !important;
   box-shadow: none !important;
 }
 
 /* rm backgrounds */
 .browser-toolbar,
-#sidebar-main, #sidebar-box{
+#sidebar-main,
+#sidebar-box {
   background: transparent !important;
 }
 
@@ -141,6 +146,8 @@
 
 /* navbar compact mode */
 #navbar-container {
+  --toolbar-start-end-padding: 0px !important;
+
   #nav-bar {
     display: flex !important;
     flex: 1 !important;
@@ -153,11 +160,11 @@
       display: none !important;
     }
   }
-  
-  #nav-bar-customization-target{
+
+  #nav-bar-customization-target {
     overflow: hidden !important;
   }
-  
+
   /* urlbar fixes */
   #urlbar-container {
     --urlbar-container-height: var(--general-toolbar-height) !important;
@@ -166,32 +173,38 @@
     height: var(--urlbar-container-height) !important;
     margin: 0px !important;
   }
-  
-  #urlbar{
+
+  #urlbar {
     --urlbar-height: 32px !important;
   }
 
   /* urlbar tweaks */
-  #urlbar-background{
+  #urlbar-background {
     border-color: var(--arrowpanel-border-color) !important;
   }
-  
+
   #urlbar[breakout][breakout-extend] {
     min-width: 400px !important;
   }
-  
+
   #identity-box.chromeUI {
-    #identity-icon-label{ display: none !important; }
-    #identity-icon-box{ padding: var(--urlbar-icon-padding) !important; }
+    #identity-icon-label {
+      display: none !important;
+    }
+
+    #identity-icon-box {
+      padding: var(--urlbar-icon-padding) !important;
+    }
   }
+
   /* toolbarspring unlimited */
-  toolbarspring, toolbarpaletteitem:has(toolbarspring){
+  toolbarspring,
+  toolbarpaletteitem:has(toolbarspring) {
     max-width: unset !important;
   }
 }
 
-#sidebar-container-container[positionend] #navbar-container 
-#urlbar[breakout][breakout-extend]{
+#sidebar-container-container[positionend] #navbar-container #urlbar[breakout][breakout-extend] {
   right: 0px !important;
   left: auto !important;
 }
@@ -260,7 +273,7 @@
 
 */
 
-#sidebar-main:has(>[hidden]){
+#sidebar-main:has(>[hidden]) {
   visibility: collapse !important;
 }
 
@@ -268,8 +281,14 @@
 /* new sidebar panel */
 .wrapper:has(.tools-and-extensions) {
   -moz-window-dragging: drag !important;
-  & * {-moz-window-dragging: no-drag !important;}
-  :is(.tools-and-extensions, .bottom-actions) moz-button { margin-block-start: 4px !important; }
+
+  & * {
+    -moz-window-dragging: no-drag !important;
+  }
+
+  :is(.tools-and-extensions, .bottom-actions) moz-button {
+    margin-block-start: 4px !important;
+  }
 }
 
 /* sidebar buttons */
@@ -281,71 +300,92 @@
   --button-min-height: 32px;
   --button-padding-icon: 14px !important;
   --button-size-icon: 32px !important;
-  
-  &[aria-pressed="true"]{ --button-background-color: color-mix(in srgb, currentColor 7%, transparent); !important; }
+
+  &[aria-pressed="true"] {
+    --button-background-color: color-mix(in srgb, currentColor 7%, transparent) !important;
+  }
 }
 
 /* tabs expanded */
-#vertical-tabs #tabbrowser-tabs[expanded]{
-  
+#vertical-tabs #tabbrowser-tabs[expanded] {
+
   /* not pinned tabs */
-  .tabbrowser-tab:not([pinned]){
+  .tabbrowser-tab:not([pinned]) {
     --tab-min-height: 32px !important;
-    &, & > * {max-height: 32px !important;}
-    
+
+    &,
+    &>* {
+      max-height: 32px !important;
+    }
+
     margin-block: 3px !important;
 
-    .tab-content{
+    .tab-content {
       padding: 0px !important;
       padding-inline-end: 5px !important;
       padding-inline-start: 10px !important;
     }
-    .tab-background{
+
+    .tab-background {
       margin: 0px !important;
       border-radius: var(--border-radius-small) !important;
-      &, & > *{max-height: 32px !important;}
+
+      &,
+      &>* {
+        max-height: 32px !important;
+      }
     }
 
-    .tab-close-button{ margin: 0px !important; }
+    .tab-close-button {
+      margin: 0px !important;
+    }
   }
-  
+
   /* new tab button */
-  #tabs-newtab-button{   
+  #tabs-newtab-button {
     --tab-min-height: 32px !important;
-    &, & > * {max-height: 32px !important;}
+
+    &,
+    &>* {
+      max-height: 32px !important;
+    }
+
     border-radius: var(--border-radius-small) !important;
-    margin: 0px !important; 
+    margin: 0px !important;
     margin-block: 3px !important;
   }
-  
+
   /* pinned tabs */
-  #vertical-pinned-tabs-container{
+  #vertical-pinned-tabs-container {
     padding-inline: 0px !important;
     display: flex !important;
     flex-wrap: wrap;
-        
+
     --max-tabs-in-row: 3;
-    
-    &:has( tab:nth-child(3n + 4):nth-last-child(1) ) tab:nth-last-child( -n + 4 )
-    { --max-tabs-in-row: 4; }
-    
-    &:has( tab:nth-child(3n + 2):nth-last-child(1) ) tab:nth-last-child( -n + 2 )
-    { --max-tabs-in-row: 2; }
-    
-    tab{
+
+    &:has(tab:nth-child(3n + 4):nth-last-child(1)) tab:nth-last-child(-n + 4) {
+      --max-tabs-in-row: 4;
+    }
+
+    &:has(tab:nth-child(3n + 2):nth-last-child(1)) tab:nth-last-child(-n + 2) {
+      --max-tabs-in-row: 2;
+    }
+
+    tab {
       flex-grow: 1 !important;
-      min-width: calc( 100% / var(--max-tabs-in-row) ) !important;
+      min-width: calc(100% / var(--max-tabs-in-row)) !important;
       width: auto !important;
       height: 42px !important;
     }
 
-    tab .tab-background{
+    tab .tab-background {
       border-radius: var(--panel-border-radius) !important;
       height: auto !important;
       margin: 2.5px !important;
     }
 
-    .tab-icon-image, .tab-icon-stack{
+    .tab-icon-image,
+    .tab-icon-stack {
       --pinned-tab-icon-size: 24px;
       height: var(--pinned-tab-icon-size) !important;
       width: var(--pinned-tab-icon-size) !important;
@@ -354,36 +394,45 @@
 }
 
 /* tabs not expanded */
-#vertical-tabs #tabbrowser-tabs:not([expanded]){
+#vertical-tabs #tabbrowser-tabs:not([expanded]) {
   --tab-collapsed-width: 40px !important;
   --tab-collapsed-background-width: 32px !important;
   --tab-min-height: 32px;
-  
-  .tab-background, #tabs-newtab-button{ 
-    margin-inline: 4px !important; 
-    border-radius: var(--border-radius-small) !important; 
+
+  .tab-background,
+  #tabs-newtab-button {
+    margin-inline: 4px !important;
+    border-radius: var(--border-radius-small) !important;
   }
-  
-  #tabs-newtab-button{ margin-top: 2px !important; }
+
+  #tabs-newtab-button {
+    margin-top: 2px !important;
+  }
 }
 
-#vertical-pinned-tabs-container-separator{ margin: 0px !important; }
+#vertical-pinned-tabs-container-separator {
+  margin: 0px !important;
+}
 
 /* rm scrollbars */
-#tabbrowser-arrowscrollbox, #vertical-pinned-tabs-container{
+#tabbrowser-arrowscrollbox,
+#vertical-pinned-tabs-container {
   --vertical-tabs-scrollbox-width: none;
 }
-scrollbox, #vertical-pinned-tabs-container{
+
+scrollbox,
+#vertical-pinned-tabs-container {
   scrollbar-width: var(--vertical-tabs-scrollbox-width) !important;
 }
 
 /* old sidebar header */
-#sidebar-box{  
-  #sidebar-header{
+#sidebar-box {
+  #sidebar-header {
     border: none !important;
     padding: 4px 3px !important;
   }
-  #sidebar-close{
+
+  #sidebar-close {
     margin-inline: 4px !important;
     padding: 7px !important;
     width: 30px !important;

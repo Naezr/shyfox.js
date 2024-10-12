@@ -12,6 +12,10 @@
   #PanelUI-button {
     padding-inline-end: var(--toolbar-start-end-padding) !important;
 
+    &:not(:has([open])) {
+      max-width: 0px !important;
+    }
+
     &>*:not([open]) {
       max-width: 0px !important;
       opacity: 0 !important;
