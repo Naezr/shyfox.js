@@ -272,3 +272,35 @@
 }
 
 */
+
+/* new sidebar panel */
+.wrapper:has(.tools-and-extensions) {
+  -moz-window-dragging: drag !important;
+
+  &:not( :has(.expanded-button)) {
+    justify-items: center !important;
+  }
+
+  & * {
+    -moz-window-dragging: no-drag !important;
+  }
+
+  :is(.tools-and-extensions, .bottom-actions) moz-button {
+    margin-block-start: 4px !important;
+  }
+}
+
+/* sidebar buttons */
+:is(.tools-and-extensions, .bottom-actions) moz-button {
+  --button-outer-padding-inline-start: 0px !important;
+  --button-outer-padding-inline-end: 0px !important;
+  --button-outer-padding-block-start: 0px !important;
+  --button-outer-padding-block-end: 0px !important;
+  --button-min-height: 32px;
+  --button-padding-icon: 14px !important;
+  --button-size-icon: 32px !important;
+
+  &[aria-pressed="true"] {
+    --button-background-color: color-mix(in srgb, currentColor 7%, transparent) !important;
+  }
+}

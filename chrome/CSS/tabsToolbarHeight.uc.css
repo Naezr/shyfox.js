@@ -1,3 +1,9 @@
+/* ==UserScript==
+// @description    Makes tabs toolbar height fit with navbar
+// @usefileuri
+// @name    Tabbar height
+// ==/UserScript==*/
+
 #TabsToolbar {
   --tabs-toolbar-height: 40px;
   --tabs-toolbar-margin: 4px;
