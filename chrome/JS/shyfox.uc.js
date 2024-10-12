@@ -65,13 +65,12 @@
       }
     }).observe(doc, { childList: true, subtree: true });
 
-    initSidebar(window);
+    initSidebar(doc, loading, window);
   }
 
 
 
-  function initSidebar(window) {
-    // create sidebar
+  function initSidebar(doc, loading, window) {
     let sidebarContainerContainer = appendDiv(doc, "sidebar-container-container", browser, true);
     let sidebarContainer = appendDiv(doc, "sidebar-container", sidebarContainerContainer);
 
