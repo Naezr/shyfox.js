@@ -6,6 +6,12 @@
 (function () {
 
   function getDomain(url) {
+    if (url.startsWith("about:")) {
+      const [_, domain] = url.split(":", 2);
+      const [aboutDomain, ...rest] = domain.split("#");
+      return aboutDomain;
+    }
+
     try {
       const domain = new URL(url).hostname;
       return domain.replace('www.', '');
