@@ -28,12 +28,16 @@
     });
   } catch (e) { }
 
+
+
   function appendDiv(doc, id, parent, firstChild = false) {
     let div = doc.createElement("div");
     div.id = id;
     parent.insertBefore(div, firstChild ? parent.firstChild : null);
     return div
   }
+
+
 
   function main(window) {
     const doc = window.document;
@@ -61,6 +65,12 @@
       }
     }).observe(doc, { childList: true, subtree: true });
 
+    initSidebar(window);
+  }
+
+
+
+  function initSidebar(window) {
     // create sidebar
     let sidebarContainerContainer = appendDiv(doc, "sidebar-container-container", browser, true);
     let sidebarContainer = appendDiv(doc, "sidebar-container", sidebarContainerContainer);
@@ -91,6 +101,8 @@
     });
   }
 
+
+
   function toggleNavbar(doc) {
     if (!doc.getElementById("navbar-container")) {
       doCompactNavbar(doc);
@@ -118,6 +130,8 @@
     container.parentNode.insertBefore(navbar, container);
     container.remove();
   }
+
+
 
   // handle sidebar position (true = left, false = right)
   function sidebarPosition(value) {
@@ -147,6 +161,8 @@
       }
     }, true)
   }
+
+
 
   // not made to be reusable, but only for sidebar-container-splitter
   function initSplitter(window, splitter, splitterTarget) {
@@ -197,6 +213,8 @@
       }
     });
   }
+
+
 
   // run
   main(window);
