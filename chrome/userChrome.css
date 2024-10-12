@@ -11,13 +11,14 @@
 
   --general-margin: 10px;
   --general-toolbar-height: 40px;
-  --panel-outline: 0.01px solid var(--chrome-content-separator-color);
+  --panel-border: 0.01px solid var(--chrome-content-separator-color);
 }
 
 /* main content */
 :root[chromehidden=""] :is(#tabbrowser-tabbox, #customization-container) {
   min-width: 200px !important;
-  outline: var(--panel-outline) !important;
+  outline: none !important;
+  border: var(--panel-border) !important;
   margin: var(--general-margin) !important;
   border-radius: var(--panel-border-radius) !important;
   box-shadow: var(--content-area-shadow) !important;
@@ -53,7 +54,7 @@
   min-width: 200px !important;
   height: 100%;
 
-  outline: 1px solid red;
+  /*outline: 1px solid red;*/
 
   &>* {
     width: inherit !important;
@@ -77,13 +78,13 @@
 #sidebar-box {
   padding: 0px !important;
   border-radius: var(--panel-border-radius) !important;
-  outline: var(--panel-outline) !important;
   box-shadow: var(--content-area-shadow) !important;
   width: auto !important;
 }
 
 #sidebar {
-  border: none !important;
+  border-radius: var(--panel-border-radius) !important;
+  border: var(--panel-border) !important;
   box-shadow: none !important;
 }
 
@@ -107,13 +108,13 @@
   width: 5px;
 
   &:not([revert]) {
-    margin-right: -6px;
-    margin-left: 5px
+    margin-right: -6.5px;
+    margin-left: 2.5px;
   }
 
   &[revert] {
-    margin-left: -6px;
-    margin-right: 5px;
+    margin-left: -6.5px;
+    margin-right: 2.5px;
   }
 
   margin-block: 5px;
@@ -277,13 +278,15 @@
 .wrapper:has(.tools-and-extensions) {
   -moz-window-dragging: drag !important;
 
-  &:not( :has(.expanded-button)) {
-    justify-items: center !important;
-  }
-
   & * {
     -moz-window-dragging: no-drag !important;
   }
+  
+  &:not( :has(.expanded-button)) {
+    justify-items: center !important;
+  }
+  
+  min-width: 40px !important;
 
   :is(.tools-and-extensions, .bottom-actions) moz-button {
     margin-block-start: 4px !important;
