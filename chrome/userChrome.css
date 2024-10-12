@@ -169,7 +169,8 @@
   /* urlbar fixes */
   #urlbar-container {
     --urlbar-container-height: var(--general-toolbar-height) !important;
-
+    
+    padding-top: 0px !important;
     width: auto !important;
     height: var(--urlbar-container-height) !important;
     margin: 0px !important;
@@ -306,4 +307,15 @@
   &[aria-pressed="true"] {
     --button-background-color: color-mix(in srgb, currentColor 7%, transparent) !important;
   }
+}
+
+/* rm scrollbars */
+#tabbrowser-arrowscrollbox,
+#vertical-pinned-tabs-container {
+  --vertical-tabs-scrollbox-width: none;
+}
+
+scrollbox,
+#vertical-pinned-tabs-container {
+  scrollbar-width: var(--vertical-tabs-scrollbox-width) !important;
 }

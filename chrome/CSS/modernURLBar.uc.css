@@ -15,14 +15,14 @@
     background-color: var(--urlbar-box-hover-bgcolor);
     color: var(--urlbar-box-hover-text-color);
   }
-  
+
   overflow: hidden;
 }
 
 #shyLabelBox {
   flex: 1;
   overflow: hidden;
-  margin-inline: 8px;
+  padding-inline: 8px;
   align-content: center;
   text-align: center;
   white-space: nowrap;
