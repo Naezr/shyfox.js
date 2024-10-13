@@ -49,6 +49,10 @@
   background-color: color-mix(in srgb, CurrentColor 8%, transparent) !important;
 }
 
+.bookmark-item[style*="hidden"]{
+  -moz-window-dragging: drag !important;
+}
+
 
 
 /* mainest sidebar container styles */
