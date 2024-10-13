@@ -33,9 +33,11 @@
 
 /* rm backgrounds */
 .browser-toolbar,
+.notificationbox-stack,
 #sidebar-main,
 #sidebar-box {
   background: transparent !important;
+  border: none !important;
 }
 
 #nav-bar,
@@ -43,7 +45,9 @@
   z-index: 2;
 }
 
-
+.bookmark-item:not(:hover){
+  background-color: color-mix(in srgb, CurrentColor 8%, transparent) !important;
+}
 
 
 
@@ -64,6 +68,8 @@
 
 /* main sidebar container styles */
 #sidebar-container {
+  --toolbar-start-end-padding: 0px !important;
+  
   display: flex;
   flex-direction: column;
   max-width: 600px !important;
@@ -77,6 +83,10 @@
     min-width: 200px !important;
     max-width: 100% !important;
   }
+}
+
+#sidebar-container #PersonalToolbar{
+  padding-inline: 0px !important;
 }
 
 /* sidebar content box styles */
@@ -158,8 +168,6 @@
 
 /* navbar compact mode */
 #navbar-container {
-  --toolbar-start-end-padding: 0px !important;
-
   #nav-bar {
     display: flex !important;
     flex: 1 !important;
