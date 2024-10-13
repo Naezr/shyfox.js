@@ -66,8 +66,55 @@
       }
     }).observe(doc, { childList: true, subtree: true });
 
+    initPanelsConfig();
+    UC_API.Prefs.addListener("shyfox", (pref) => (initPanelsConfig(pref)));
+
     initSidebar(doc, loading, window);
     initTopbar(doc, loading, window);
+    initBottombar(doc, loading, window);
+  }
+
+
+
+  function initPanelsConfig(pref) {
+    // array of existing containers
+    let panels = ["sidebar", "topbar", "btmbar"];
+
+    // valid panels for each container (keys must be identical to panels array)
+    let validValues = {
+      sidebar: ["navbar", "bmbar"],
+      topbar: ["tabbar", "navbar", "bmbar"],
+      btmbar: ["tabbar", "navbar", "bmbar"]
+    };
+
+    // remove duplicate panels if called by pref listener
+    if (pref) panelsCfgRmDuplicate(pref, panels);
+    // remove invalid panels
+    panelsCfgRmInvalid(panels, validValues);
+  }
+
+  function panelsCfgRmInvalid(panels, validValues) {
+    // create object containing all containers with their configs
+    let allConfigs = Object.fromEntries(panels.map(panel => [panel, UC_API.Prefs.get(`shyfox.${panel}-config`).value.split(",")]));
+    // filter allConfigs to have only valid values
+    let filteredConfigs = Object.fromEntries(Object.entries(allConfigs).map(([box, panels]) => [box, panels.filter(panel => validValues[box].includes(panel))]));
+    // save containers configs
+    Object.entries(filteredConfigs).forEach(([key, value]) => UC_API.Prefs.set(`shyfox.${key}-config`, value.join(",")));
+  }
+
+  function panelsCfgRmDuplicate(pref, panels) {
+    // get array of panels for last modified container
+    let changedConfig = pref.value.split(",");
+    // get key from pref name of last modified container
+    let changedPref = pref.name.replace(/shyfox\.(.*)-config/, "$1");
+    // create object containing all containers with their configs
+    let allConfigs = Object.fromEntries(panels.map(panel => [panel, UC_API.Prefs.get(`shyfox.${panel}-config`).value.split(",")]));
+    // create object containing all containers with their configs except last modified container
+    let otherConfigs = Object.fromEntries(Object.entries(allConfigs).filter(([key, value]) => key != changedPref));
+    // remove panels added to the last container from the other containers
+    Object.entries(otherConfigs).forEach(([key, value]) => otherConfigs[key] = value.filter(panel => !changedConfig.includes(panel)));
+    // save other containers configs
+    Object.entries(otherConfigs).forEach(([key, value]) => UC_API.Prefs.set(`shyfox.${key}-config`, value.join(",")));
   }
 
 
