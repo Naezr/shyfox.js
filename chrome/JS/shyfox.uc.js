@@ -30,10 +30,11 @@
 
 
 
-  function appendDiv(doc, id, parent, firstChild = false) {
+  function appendDiv(doc, id, parent, firstChild = null) {
+    if (firstChild === true) { firstChild = parent.firstChild; }
     let div = doc.createElement("div");
     div.id = id;
-    parent.insertBefore(div, firstChild ? parent.firstChild : null);
+    parent.insertBefore(div, firstChild);
     return div
   }
 
@@ -150,7 +151,7 @@
   function doCompactNavbar(doc) {
     if (doc.getElementById("navbar-container")) return;
     const navbar = doc.getElementById("nav-bar");
-    let navbarContainer = appendDiv(doc, "navbar-container", navbar.parentNode, true);
+    let navbarContainer = appendDiv(doc, "navbar-container", navbar.parentNode, navbar.nextSibling);
     navbarContainer.appendChild(navbar);
     navbarContainer.appendChild(doc.getElementById("urlbar-container"));
   }
