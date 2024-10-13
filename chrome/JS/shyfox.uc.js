@@ -84,17 +84,18 @@
     sidebarContent.appendChild(doc.getElementById("sidebar-box"));
 
 
-    // add bookmarks bar to sidebar
-    if (UC_API.Prefs.get("shyfox.position-bookmarkbar").value === "sidebar") {
-      let bmbar = doc.getElementById("PersonalToolbar");
-      sidebarContainer.insertBefore(bmbar, sidebarContainer.firstChild);
-    }
+    let sidebarConfig = UC_API.Prefs.get("shyfox.sidebar-config").value.split(",").reverse();
 
-    // add navbar to sidebar
-    if (UC_API.Prefs.get("shyfox.position-navbar").value === "sidebar") {
-      let navbar = doc.getElementById("nav-bar");
-      sidebarContainer.insertBefore(navbar, sidebarContainer.firstChild);
-      loading.then(() => doCompactNavbar(doc));
+    let navbar = doc.getElementById("nav-bar");
+    let bmbar = doc.getElementById("PersonalToolbar");
+
+    for (let panel of sidebarConfig) {
+      if (panel === "navbar") {
+        sidebarContainer.insertBefore(navbar, sidebarContainer.firstChild);
+        loading.then(() => doCompactNavbar(doc));
+      } else if (panel === "bmbar") {
+        sidebarContainer.insertBefore(bmbar, sidebarContainer.firstChild);
+      }
     }
 
     // initial sidebar position
@@ -107,23 +108,37 @@
   }
 
 
+
   function initTopbar(doc, loading, window) {
-    let topbarContainer = appendDiv(doc, "topbar-container", gNavToolbox, true);
+    let topbarContainer = doc.createElement("div");
+    topbarContainer.id = "topbar-container";
+    topbarContainer.classList.add("shyfox-container");
+    window.gNavToolbox.insertBefore(topbarContainer, window.browser);
+
     topbarContainer.classList.add("shyfox-container");
 
-    // add navbar to topbar
-    if (UC_API.Prefs.get("shyfox.position-navbar").value === "top") {
-      let navbar = doc.getElementById("nav-bar");
-      topbarContainer.appendChild(navbar);
-    }
+    let topbarConfig = UC_API.Prefs.get("shyfox.topbar-config").value.split(",");
 
-    // add bookmarks bar to topbar
-    if (UC_API.Prefs.get("shyfox.position-bookmarkbar").value === "top") {
-      let bmbar = doc.getElementById("PersonalToolbar");
-      topbarContainer.appendChild(bmbar);
+    let tabbar = doc.getElementById("TabsToolbar");
+    let navbar = doc.getElementById("nav-bar");
+    let bmbar = doc.getElementById("PersonalToolbar");
+
+    for (let panel of topbarConfig) {
+      if (panel === "tabbar") {
+        topbarContainer.appendChild(tabbar);
+      } else if (panel === "navbar") {
+        topbarContainer.appendChild(navbar);
+      } else if (panel === "bmbar") {
+        topbarContainer.appendChild(bmbar);
+      }
     }
   }
 
+
+
+  function initBottombar(doc, loading, window) {
+
+  }
 
 
   function toggleNavbar(doc) {
