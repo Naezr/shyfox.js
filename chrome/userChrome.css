@@ -31,7 +31,23 @@
   border: none !important;
 }
 
-/* mainest container styles */
+/* rm backgrounds */
+.browser-toolbar,
+#sidebar-main,
+#sidebar-box {
+  background: transparent !important;
+}
+
+#nav-bar,
+#topbar-container {
+  z-index: 2;
+}
+
+
+
+
+
+/* mainest sidebar container styles */
 #sidebar-container-container {
   display: flex;
   flex-direction: row;
@@ -88,14 +104,6 @@
   box-shadow: none !important;
 }
 
-/* rm backgrounds */
-.browser-toolbar,
-#sidebar-main,
-#sidebar-box {
-  background: transparent !important;
-}
-
-
 /* splitter */
 #sidebar-splitter {
   visibility: collapse !important;
@@ -113,8 +121,8 @@
   }
 
   &[revert] {
-    margin-left: -6.5px;
-    margin-right: 2.5px;
+    margin-left: -7.5px;
+    margin-right: 3.5px;
   }
 
   margin-block: 5px;
@@ -144,6 +152,9 @@
   min-width: 0px !important;
   width: 100% !important;
 }
+
+
+
 
 /* navbar compact mode */
 #navbar-container {
@@ -199,6 +210,11 @@
     }
   }
 
+  #identity-box[pageproxystate="valid"]:is(.notSecureText, .chromeUI, .extensionPage),
+  #urlbar-label-box {
+    margin-inline-end: 4px !important;
+  }
+
   /* toolbarspring unlimited */
   toolbarspring,
   toolbarpaletteitem:has(toolbarspring) {
@@ -210,6 +226,9 @@
   right: 0px !important;
   left: auto !important;
 }
+
+
+
 
 /* customizing page styles */
 :root[customizing] {
@@ -260,23 +279,33 @@
 /*
 #sidebar-container-container{
   position: fixed;
+  margin: 0px !important;
   z-index: 1;
   transition: all .3s ease;
   &:not(:hover){ transition-delay: 1s }
-  left: 0px;
-  
+  left: calc( var(--general-margin) * 2 );
+
   background: var(--arrowpanel-background);
   
-  top: 50px;
+  top: 150px;
   height: 700px;
-  
+
   &:not(:hover, [dragging], :has(:not(tab)[open]) ){
     left: calc(5px - var(--sidebar-width) );
     opacity: 0;
   }
+  
+  &::before{
+    content: "";
+    height: 100%;
+    width: 100px;
+    
+    position: absolute;
+    right: 100%;
+  }
 }
 
-*/
+
 
 /* new sidebar panel */
 .wrapper:has(.tools-and-extensions) {

@@ -66,12 +66,14 @@
     }).observe(doc, { childList: true, subtree: true });
 
     initSidebar(doc, loading, window);
+    initTopbar(doc, loading, window);
   }
 
 
 
   function initSidebar(doc, loading, window) {
     let sidebarContainerContainer = appendDiv(doc, "sidebar-container-container", browser, true);
+    sidebarContainerContainer.classList.add("shyfox-container");
     let sidebarContainer = appendDiv(doc, "sidebar-container", sidebarContainerContainer);
 
     let splitter = appendDiv(doc, "sidebar-container-splitter", sidebarContainerContainer);
@@ -83,13 +85,17 @@
 
 
     // add bookmarks bar to sidebar
-    let bmbar = doc.getElementById("PersonalToolbar");
-    sidebarContainer.insertBefore(bmbar, sidebarContainer.firstChild);
+    if (UC_API.Prefs.get("shyfox.position-bookmarkbar").value === "sidebar") {
+      let bmbar = doc.getElementById("PersonalToolbar");
+      sidebarContainer.insertBefore(bmbar, sidebarContainer.firstChild);
+    }
 
     // add navbar to sidebar
-    let navbar = doc.getElementById("nav-bar");
-    sidebarContainer.insertBefore(navbar, sidebarContainer.firstChild);
-    loading.then(() => doCompactNavbar(doc));
+    if (UC_API.Prefs.get("shyfox.position-navbar").value === "sidebar") {
+      let navbar = doc.getElementById("nav-bar");
+      sidebarContainer.insertBefore(navbar, sidebarContainer.firstChild);
+      loading.then(() => doCompactNavbar(doc));
+    }
 
     // initial sidebar position
     loading.then(() => sidebarPosition(UC_API.Prefs.get("sidebar.position_start").value));
@@ -98,6 +104,24 @@
     UC_API.Prefs.addListener("sidebar.position_start", (obj, pref) => {
       sidebarPosition(obj.value);
     });
+  }
+
+
+  function initTopbar(doc, loading, window) {
+    let topbarContainer = appendDiv(doc, "topbar-container", gNavToolbox, true);
+    topbarContainer.classList.add("shyfox-container");
+
+    // add navbar to topbar
+    if (UC_API.Prefs.get("shyfox.position-navbar").value === "top") {
+      let navbar = doc.getElementById("nav-bar");
+      topbarContainer.appendChild(navbar);
+    }
+
+    // add bookmarks bar to topbar
+    if (UC_API.Prefs.get("shyfox.position-bookmarkbar").value === "top") {
+      let bmbar = doc.getElementById("PersonalToolbar");
+      topbarContainer.appendChild(bmbar);
+    }
   }
 
 
@@ -187,6 +211,7 @@
       docElStyle.setProperty("pointer-events", "none"); // prevent flickering
       docElStyle.setProperty("cursor", "ew-resize");
       splitter.setAttribute("dragging", "");
+      splitter.parentNode.setAttribute("dragging", "");
       initialX = e.clientX;
       initialWidth = splitterTarget.offsetWidth;
     });
@@ -204,6 +229,7 @@
       if (!isDragging) return;
       isDragging = false;
       splitter.removeAttribute("dragging");
+      splitter.parentNode.removeAttribute("dragging");
       docElStyle.removeProperty("pointer-events"); // undo prevent flickering
       docElStyle.removeProperty("cursor");
       UC_API.Prefs.set("sidebar-container.width", width); // save sidebar width
