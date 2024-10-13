@@ -38,40 +38,50 @@
     return div
   }
 
+  function waitCreating(window, id, callback) {
+    new MutationObserver(function (mutationsList, observer) {
+      for (let mutation of mutationsList) {
+        if (mutation.addedNodes.length) {
+          for (let node of mutation.addedNodes) {
+            if (node.id === id) {
+              callback();
+              observer.disconnect();
+              break;
+            }
+          }
+        }
+      }
+    }).observe(window.document, { childList: true, subtree: true });
+  }
+
 
 
   function main(window) {
     const doc = window.document;
     if (doc.documentElement.getAttribute("chromehidden") != "") return; // return if window is not full
-
     let loading = window.UC_API.Windows.waitWindowLoading(window);
 
     // append browser
     doc.getElementById("navigator-toolbox").appendChild(doc.getElementById("browser"));
 
     // append customization box when created
-    new MutationObserver(function (mutationsList, observer) {
-      for (let mutation of mutationsList) {
-        if (mutation.addedNodes.length) {
-          for (let node of mutation.addedNodes) {
-            if (node.id === "customization-container") {
-              browser.appendChild(node);
-              sidebarPosition(UC_API.Prefs.get("sidebar.position_start").value);
-              observer.disconnect();
-              console.log("customization moved");
-              break;
-            }
-          }
-        }
-      }
-    }).observe(doc, { childList: true, subtree: true });
+    waitCreating(window, "customization-container", function () {
+      window.browser.appendChild(window.document.getElementById("customization-container"));
+      sidebarPosition(UC_API.Prefs.get("sidebar.position_start").value);
+    });
 
+    // panels initialization
     initPanelsConfig();
     UC_API.Prefs.addListener("shyfox", (pref) => (initPanelsConfig(pref)));
 
     initSidebar(doc, loading, window);
     initTopbar(doc, loading, window);
     initBottombar(doc, loading, window);
+
+    // insert notification deck when created
+    waitCreating(window, "tab-notification-deck", function () {
+      window.gNavToolbox.insertBefore(window.document.getElementById("tab-notification-deck"), window.browser);
+    });
   }
 
 
