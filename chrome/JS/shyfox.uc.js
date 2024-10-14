@@ -5,6 +5,34 @@
 
 (function () {
 
+  // array of existing containers
+  const containers = ["sidebar", "topbar", "btmbar"];
+
+  // array of existing panels
+  const panels = ["navbar", "bmbar", "tabbar", "content"];
+
+  // ids of existing panels
+  const panelsIds = {
+    navbar: "nav-bar",
+    bmbar: "PersonalToolbar",
+    tabbar: "TabsToolbar",
+    content: "sidebar-content"
+  }
+
+  // valid panels for each container (keys must be identical to containers array)
+  const validValues = {
+    sidebar: ["navbar", "bmbar", "content"],
+    topbar: ["tabbar", "navbar", "bmbar"],
+    btmbar: ["tabbar", "navbar", "bmbar"]
+  };
+
+  // default panels state
+  const defaultState = {
+    sidebar: ["content"],
+    topbar: ["tabbar", "navbar", "bmbar"],
+    btmbar: [""]
+  };
+
   try { // create clean cache & restart button
     UC_API.Utils.createWidget({
       id: "restart-button",
@@ -76,40 +104,12 @@
 
 
   function initPanels(pref, doc, loading, window) {
-    // array of existing containers
-    let containers = ["sidebar", "topbar", "btmbar"];
-
-    // array of existing panels
-    let panels = ["navbar", "bmbar", "tabbar", "content"];
-
-    // ids of existing panels
-    let panelsIds = {
-      navbar: "nav-bar",
-      bmbar: "PersonalToolbar",
-      tabbar: "TabsToolbar",
-      content: "sidebar-content"
-    }
-
-    // valid panels for each container (keys must be identical to containers array)
-    let validValues = {
-      sidebar: ["navbar", "bmbar", "content"],
-      topbar: ["tabbar", "navbar", "bmbar"],
-      btmbar: ["tabbar", "navbar", "bmbar"]
-    };
-
-    // default panels state
-    let defaultState = {
-      sidebar: ["content"],
-      topbar: ["tabbar", "navbar", "bmbar"],
-      btmbar: [""]
-    };
-
     // remove duplicate panels if called by pref listener
-    if (pref) panelsCfgRmDuplicate(pref, containers);
+    if (pref) panelsCfgRmDuplicate(pref);
     // remove invalid panels
-    panelsCfgRmInvalid(containers, validValues);
+    panelsCfgRmInvalid();
     // check if missing panels
-    panelsCfgCheckMissing(containers, panels, defaultState);
+    panelsCfgCheckMissing();
 
     // init
     initSidebar(doc, loading, window);
@@ -119,7 +119,7 @@
 
 
 
-  function panelsGetAllConfigs(containers) {
+  function panelsGetAllConfigs() {
     // return object containing all containers with their configs
     return Object.fromEntries(containers.map(container =>
       [container, UC_API.Prefs.get(`shyfox.${container}-config`).value.split(",")]));
@@ -130,7 +130,7 @@
     Object.entries(configs).forEach(([container, panels]) => UC_API.Prefs.set(`shyfox.${container}-config`, panels.join(",")));
   }
 
-  function panelsCfgRmInvalid(containers, validValues) {
+  function panelsCfgRmInvalid() {
     // get all configs object
     let allConfigs = panelsGetAllConfigs(containers);
     // filter allConfigs to have only valid values
@@ -140,7 +140,7 @@
     panelsSaveConfigs(filteredConfigs);
   }
 
-  function panelsCfgRmDuplicate(pref, containers) {
+  function panelsCfgRmDuplicate(pref) {
     // get array of panels for last modified container
     let changedConfig = pref.value.split(",");
     // get key from pref name of last modified container
@@ -156,7 +156,7 @@
     panelsSaveConfigs(otherConfigs);
   }
 
-  function panelsCfgCheckMissing(containers, panels, defaultState) {
+  function panelsCfgCheckMissing() {
     // get all configs object
     let allConfigs = panelsGetAllConfigs(containers);
     // check if each panel is present in any config
