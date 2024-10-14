@@ -19,7 +19,7 @@
   overflow: hidden;
 }
 
-.urlbar-input-container:has(#identity-box.chromeUI[pageproxystate="valid"]):has(#shyUrlBox:not([empty], [null])) {
+.urlbar-input-container:not(:focus-within):has(#identity-box.chromeUI[pageproxystate="valid"]):has(#shyUrlBox:not([empty], [null])) {
   #identity-box {
     margin-inline-end: 0px !important;
   }
