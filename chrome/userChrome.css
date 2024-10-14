@@ -222,11 +222,6 @@
     }
   }
 
-  #identity-box[pageproxystate="valid"]:is(.notSecureText, .chromeUI, .extensionPage),
-  #urlbar-label-box {
-    margin-inline-end: 4px !important;
-  }
-
   /* toolbarspring unlimited */
   toolbarspring,
   toolbarpaletteitem:has(toolbarspring) {

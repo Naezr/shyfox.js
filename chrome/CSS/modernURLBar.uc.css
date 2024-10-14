@@ -19,6 +19,30 @@
   overflow: hidden;
 }
 
+.urlbar-input-container:has(#identity-box.chromeUI[pageproxystate="valid"]):has(#shyUrlBox:not([empty], [null])) {
+  #identity-box {
+    margin-inline-end: 0px !important;
+  }
+
+  #identity-icon-box {
+    border-top-right-radius: 0px !important;
+    border-bottom-right-radius: 0px !important;
+    padding-right: 0px !important;
+  }
+
+  #shyUrlBox {
+    border-top-left-radius: 0px;
+    border-bottom-left-radius: 0px;
+    padding-left: 0px;
+  }
+
+  #shyUrlBox::before {
+    content: "/";
+    padding-inline: 2px;
+    opacity: .5;
+  }
+}
+
 #shyLabelBox {
   flex: 1;
   overflow: hidden;
