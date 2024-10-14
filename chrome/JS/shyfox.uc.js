@@ -91,6 +91,9 @@
     createTopbar(doc, loading, window);
     createBottombar(doc, loading, window);
 
+    // init titlebar button box
+    initButtonBox(doc, loading, window);
+
     // init panels
     initPanels(false, doc, loading, window);
     UC_API.Prefs.addListener("shyfox", (pref) => (initPanels(pref, doc, loading, window)));
@@ -193,6 +196,14 @@
       allConfigs[container].push(...missingPanelsByContainer[container]);
     // save containers configs
     panelsSaveConfigs(allConfigs);
+  }
+
+
+
+  function initButtonBox(doc, loading, window) {
+    let menubarButtonBox = doc.querySelector("#toolbar-menubar .titlebar-buttonbox-container");
+    let bmbarButtonBox = menubarButtonBox.cloneNode(true);
+    doc.getElementById("PersonalToolbar").appendChild(bmbarButtonBox);
   }
 
 

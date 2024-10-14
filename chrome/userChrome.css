@@ -8,10 +8,30 @@
   --panel-border-radius: 15px !important;
 
   --bookmarks-toolbar-overlapping-browser-height: 0px !important;
+  --toolbar-start-end-padding: 0px !important;
 
   --general-margin: 10px;
   --general-toolbar-height: 40px;
   --panel-border: 0.01px solid var(--chrome-content-separator-color);
+}
+
+/* browser margin */
+:root{
+  --browser-margin-top: 0px;
+  &:not(:has(#topbar-container > *:not([hidden], [collapsed="true"]))){
+    --browser-margin-top: var(--general-margin);
+  }
+  --browser-margin-bottom: 0px;
+  &:not(:has(#btmbar-container > *:not([hidden], [collapsed="true"]))){
+    --browser-margin-bottom: var(--general-margin);
+  }
+  
+  --browser-margin: 
+    var(--browser-margin-top) 
+    var(--general-margin) 
+    var(--browser-margin-bottom)
+    var(--general-margin)
+  ;
 }
 
 /* main content */
@@ -19,7 +39,7 @@
   min-width: 200px !important;
   outline: none !important;
   border: var(--panel-border) !important;
-  margin: var(--general-margin) !important;
+  margin: var(--browser-margin) !important;
   border-radius: var(--panel-border-radius) !important;
   box-shadow: var(--content-area-shadow) !important;
   overflow: hidden !important;
@@ -40,17 +60,58 @@
   border: none !important;
 }
 
+/* z-indexing */
 #nav-bar,
 #topbar-container {
   z-index: 2;
 }
 
-.bookmark-item:not(:hover){
+/* bookmarks backgrounds */
+#PlacesToolbarItems > .bookmark-item:not(:hover){
   background-color: color-mix(in srgb, CurrentColor 8%, transparent) !important;
 }
 
+/* bookmark toolbar dragging */
 .bookmark-item[style*="hidden"]{
   -moz-window-dragging: drag !important;
+}
+
+/* urlbar border */
+#urlbar-background {
+  border-color: var(--arrowpanel-border-color) !important;
+}
+
+/* start end paddings */
+#PersonalToolbar{
+  padding: 0px !important;
+}
+
+#topbar-container,
+#btmbar-container{
+  padding: 3px;
+}
+
+/* titlebar buttonbox */
+.titlebar-spacer,
+.titlebar-buttonbox-container{
+  display: none !important;
+}
+
+:root:has(#toolbar-menubar[inactive])
+#topbar-container > *:nth-child(1 of *:not([hidden], [collapsed="true"])) {
+  .titlebar-spacer,
+  .titlebar-buttonbox-container{
+    display: flex !important;
+  }
+}
+
+#toolbar-menubar .titlebar-buttonbox-container{
+  display: flex !important;
+}
+
+/* new buttons */
+toolbar :is(#movable-menu-button, #movable-extensions-button){
+  padding: 0 var(--toolbarbutton-outer-padding) !important;
 }
 
 
@@ -59,21 +120,11 @@
 #sidebar-container-container {
   display: flex;
   flex-direction: row;
-  margin-block: var(--general-margin);
-
-  &:not([positionend]) {
-    margin-left: var(--general-margin)
-  }
-
-  &[positionend] {
-    margin-right: var(--general-margin)
-  }
+  margin-block: var(--browser-margin-top) var(--browser-margin-bottom);
 }
 
 /* main sidebar container styles */
-#sidebar-container {
-  --toolbar-start-end-padding: 0px !important;
-  
+#sidebar-container {  
   display: flex;
   flex-direction: column;
   max-width: 600px !important;
@@ -204,10 +255,6 @@
   }
 
   /* urlbar tweaks */
-  #urlbar-background {
-    border-color: var(--arrowpanel-border-color) !important;
-  }
-
   #urlbar[breakout][breakout-extend] {
     min-width: 400px !important;
   }
