@@ -221,6 +221,7 @@
 
     for (let panel of sidebarConfig) {
       if (panel === "navbar") {
+        undoCompactNavbar(doc);
         sidebarContainer.insertBefore(navbar, sidebarContainer.firstChild);
         loading.then(() => doCompactNavbar(doc));
       } else if (panel === "bmbar") {
