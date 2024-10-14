@@ -18,16 +18,6 @@
     });
   } catch (e) { }
 
-  try { // create clean cache & restart button
-    UC_API.Utils.createWidget({
-      id: "navbar-toggle-button",
-      type: "toolbarbutton",
-      label: "Navbar",
-      image: "chrome://browser/skin/import.svg",
-      callback: function () { toggleNavbar(window.document); }
-    });
-  } catch (e) { }
-
 
 
   function appendDiv(doc, id, parent, child = null) {
@@ -283,12 +273,6 @@
   }
 
 
-
-  function toggleNavbar(doc) {
-    if (!doc.getElementById("navbar-container")) {
-      doCompactNavbar(doc);
-    } else { undoCompactNavbar(doc); }
-  }
 
   function doCompactNavbar(doc) {
     if (doc.getElementById("navbar-container")) return;
