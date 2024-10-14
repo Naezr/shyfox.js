@@ -3,8 +3,6 @@
 // @description     ShyFox custom scripts
 // ==/UserScript==
 
-// create fast restart button 
-
 (function () {
 
   try { // create clean cache & restart button
