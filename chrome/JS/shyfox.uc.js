@@ -108,6 +108,8 @@
     if (pref) panelsCfgRmDuplicate(pref);
     // remove invalid panels
     panelsCfgRmInvalid();
+    // remove repeats in each container
+    panelsCfgRmRepeats();
     // check if missing panels
     panelsCfgCheckMissing();
 
@@ -154,6 +156,16 @@
       otherConfigs[key] = value.filter(panel => !changedConfig.includes(panel)));
     // save other containers configs
     panelsSaveConfigs(otherConfigs);
+  }
+
+  function panelsCfgRmRepeats() {
+    // get all configs object
+    let allConfigs = panelsGetAllConfigs(containers);
+    // remove repeats in each container
+    for (const [key, value] of Object.entries(allConfigs))
+      allConfigs[key] = Array.from(new Set(value));
+    // save containers configs
+    panelsSaveConfigs(allConfigs);
   }
 
   function panelsCfgCheckMissing() {
