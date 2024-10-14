@@ -159,17 +159,26 @@
   function panelsCfgCheckMissing() {
     // get all configs object
     let allConfigs = panelsGetAllConfigs(containers);
-    // check if each panel is present in any config
-    panels.forEach(panel => {
-      if (!Object.values(allConfigs).some(container => container.includes(panel))) {
-        let defaultContainer = Object.entries(defaultState).find(([key, value]) => value.includes(panel))[0];
-        let currentContainer = allConfigs[defaultContainer];
-        allConfigs[defaultContainer] = [...currentContainer, panel];
-      }
-    });
+    // create Set of all panels present in all configs
+    let allPanels = new Set(Object.values(allConfigs).flat());
+    // create object to store missing panels by container
+    let missingPanelsByContainer = {};
+    // get missing panels for each container
+    for (let panel of panels) if (!allPanels.has(panel)) {
+      // get default container for panel
+      let defaultContainer = Object.keys(defaultState).find(key => defaultState[key].includes(panel));
+      // add this container to the missing panels object if needed
+      if (!missingPanelsByContainer[defaultContainer]) missingPanelsByContainer[defaultContainer] = [];
+      // filter missing panels for this container
+      missingPanelsByContainer[defaultContainer] = defaultState[defaultContainer].filter(panel => !allPanels.has(panel));
+    }
+    // add missing panels to their default container
+    for (let container in missingPanelsByContainer)
+      allConfigs[container].push(...missingPanelsByContainer[container]);
     // save containers configs
     panelsSaveConfigs(allConfigs);
   }
+
 
 
   function createSidebar(doc, loading, window) {
