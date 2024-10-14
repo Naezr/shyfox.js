@@ -123,8 +123,10 @@
 
   function panelsGetAllConfigs() {
     // return object containing all containers with their configs
-    return Object.fromEntries(containers.map(container =>
-      [container, UC_API.Prefs.get(`shyfox.${container}-config`).value.split(",")]));
+    return Object.fromEntries(containers.map(container => {
+      let value = UC_API.Prefs.get(`shyfox.${container}-config`).value;
+      return [container, value !== null ? value.split(",") : [""]];
+    }));
   }
 
   function panelsSaveConfigs(configs) {
@@ -143,6 +145,8 @@
   }
 
   function panelsCfgRmDuplicate(pref) {
+    // skip if pref value is null
+    if (pref.value === null) return;
     // get array of panels for last modified container
     let changedConfig = pref.value.split(",");
     // get key from pref name of last modified container
