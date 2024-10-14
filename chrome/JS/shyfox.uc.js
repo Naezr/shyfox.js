@@ -30,11 +30,11 @@
 
 
 
-  function appendDiv(doc, id, parent, firstChild = null) {
-    if (firstChild === true) { firstChild = parent.firstChild; }
+  function appendDiv(doc, id, parent, child = null) {
+    if (child === true) { child = parent.firstChild; }
     let div = doc.createElement("div");
     div.id = id;
-    parent.insertBefore(div, firstChild);
+    parent.insertBefore(div, child);
     return div
   }
 
@@ -170,11 +170,7 @@
 
 
   function initTopbar(doc, loading, window) {
-    let topbarContainer = doc.createElement("div");
-    topbarContainer.id = "topbar-container";
-    topbarContainer.classList.add("shyfox-container");
-    window.gNavToolbox.insertBefore(topbarContainer, window.browser);
-
+    let topbarContainer = appendDiv(doc, "topbar-container", window.gNavToolbox, window.browser);
     topbarContainer.classList.add("shyfox-container");
 
     let topbarConfig = UC_API.Prefs.get("shyfox.topbar-config").value.split(",");
