@@ -341,11 +341,6 @@
 
     setSidebarWidth(width); // initial width set
 
-    function setSidebarWidth(width) {
-      splitterTarget.style.width = width + "px";
-      splitterTarget.parentNode.style.setProperty("--sidebar-width", width + "px");
-    }
-
     splitter.addEventListener("mousedown", (e) => {
       isDragging = true;
       docElStyle.setProperty("pointer-events", "none"); // prevent flickering
@@ -362,7 +357,8 @@
       if (newWidth < minWidth) return;
       if (newWidth > maxWidth) return;
       width = Math.min(Math.max(newWidth, minWidth), maxWidth);
-      setSidebarWidth(width);
+      splitterTarget.style.width = width + "px";
+      splitterTarget.parentNode.style.setProperty("--sidebar-width", width + "px");
     });
 
     doc.documentElement.addEventListener("mouseup", () => {
