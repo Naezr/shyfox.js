@@ -70,13 +70,14 @@
       sidebarPosition(UC_API.Prefs.get("sidebar.position_start").value);
     });
 
-    // panels initialization
-    initPanelsConfig();
-    UC_API.Prefs.addListener("shyfox", (pref) => (initPanelsConfig(pref)));
+    // create containers
+    createSidebar(doc, loading, window);
+    createTopbar(doc, loading, window);
+    createBottombar(doc, loading, window);
 
-    initSidebar(doc, loading, window);
-    initTopbar(doc, loading, window);
-    initBottombar(doc, loading, window);
+    // init panels
+    initPanels(false, doc, loading, window);
+    UC_API.Prefs.addListener("shyfox", (pref) => (initPanels(pref, doc, loading, window)));
 
     // insert notification deck when created
     waitCreating(window, "tab-notification-deck", function () {
@@ -86,30 +87,69 @@
 
 
 
-  function initPanelsConfig(pref) {
+  function initPanels(pref, doc, loading, window) {
     // array of existing containers
     let containers = ["sidebar", "topbar", "btmbar"];
 
-    // valid panels for each container (keys must be identical to panels array)
+    // array of existing panels
+    let panels = ["navbar", "bmbar", "tabbar", "content"];
+
+    // ids of existing panels
+    let panelsIds = {
+      navbar: "nav-bar",
+      bmbar: "PersonalToolbar",
+      tabbar: "TabsToolbar",
+      content: "sidebar-content"
+    }
+
+    // valid panels for each container (keys must be identical to containers array)
     let validValues = {
       sidebar: ["navbar", "bmbar", "content"],
       topbar: ["tabbar", "navbar", "bmbar"],
       btmbar: ["tabbar", "navbar", "bmbar"]
     };
 
+    // default panels state
+    let defaultState = {
+      sidebar: ["content"],
+      topbar: ["tabbar", "navbar", "bmbar"],
+      btmbar: [""]
+    };
+
     // remove duplicate panels if called by pref listener
     if (pref) panelsCfgRmDuplicate(pref, containers);
     // remove invalid panels
     panelsCfgRmInvalid(containers, validValues);
+    // check if missing panels
+    panelsCfgCheckMissing(containers, panels, defaultState);
+
+    // init
+    initSidebar(doc, loading, window);
+    initTopbar(doc, loading, window);
+    initBottombar(doc, loading, window);
+  }
+
+
+
+  function panelsGetAllConfigs(containers) {
+    // return object containing all containers with their configs
+    return Object.fromEntries(containers.map(container =>
+      [container, UC_API.Prefs.get(`shyfox.${container}-config`).value.split(",")]));
+  }
+
+  function panelsSaveConfigs(configs) {
+    // save settings from the received object
+    Object.entries(configs).forEach(([container, panels]) => UC_API.Prefs.set(`shyfox.${container}-config`, panels.join(",")));
   }
 
   function panelsCfgRmInvalid(containers, validValues) {
-    // create object containing all containers with their configs
-    let allConfigs = Object.fromEntries(containers.map(container => [container, UC_API.Prefs.get(`shyfox.${container}-config`).value.split(",")]));
+    // get all configs object
+    let allConfigs = panelsGetAllConfigs(containers);
     // filter allConfigs to have only valid values
-    let filteredConfigs = Object.fromEntries(Object.entries(allConfigs).map(([container, panels]) => [container, panels.filter(panel => validValues[container].includes(panel))]));
+    let filteredConfigs = Object.fromEntries(Object.entries(allConfigs).map(([container, panels]) =>
+      [container, panels.filter(panel => validValues[container].includes(panel))]));
     // save containers configs
-    Object.entries(filteredConfigs).forEach(([container, panels]) => UC_API.Prefs.set(`shyfox.${container}-config`, panels.join(",")));
+    panelsSaveConfigs(filteredConfigs);
   }
 
   function panelsCfgRmDuplicate(pref, containers) {
@@ -117,20 +157,35 @@
     let changedConfig = pref.value.split(",");
     // get key from pref name of last modified container
     let changedPref = pref.name.replace(/shyfox\.(.*)-config/, "$1");
-    // create object containing all containers with their configs
-    let allConfigs = Object.fromEntries(containers.map(container => [container, UC_API.Prefs.get(`shyfox.${container}-config`).value.split(",")]));
+    // get all configs object
+    let allConfigs = panelsGetAllConfigs(containers);
     // create object containing all containers with their configs except last modified container
     let otherConfigs = Object.fromEntries(Object.entries(allConfigs).filter(([key, value]) => key != changedPref));
     // remove panels added to the last container from the other containers
-    Object.entries(otherConfigs).forEach(([key, value]) => otherConfigs[key] = value.filter(panel => !changedConfig.includes(panel)));
+    Object.entries(otherConfigs).forEach(([key, value]) =>
+      otherConfigs[key] = value.filter(panel => !changedConfig.includes(panel)));
     // save other containers configs
-    Object.entries(otherConfigs).forEach(([key, value]) => UC_API.Prefs.set(`shyfox.${key}-config`, value.join(",")));
+    panelsSaveConfigs(otherConfigs);
+  }
+
+  function panelsCfgCheckMissing(containers, panels, defaultState) {
+    // get all configs object
+    let allConfigs = panelsGetAllConfigs(containers);
+    // check if each panel is present in any config
+    panels.forEach(panel => {
+      if (!Object.values(allConfigs).some(container => container.includes(panel))) {
+        let defaultContainer = Object.entries(defaultState).find(([key, value]) => value.includes(panel))[0];
+        let currentContainer = allConfigs[defaultContainer];
+        allConfigs[defaultContainer] = [...currentContainer, panel];
+      }
+    });
+    // save containers configs
+    panelsSaveConfigs(allConfigs);
   }
 
 
-
-  function initSidebar(doc, loading, window) {
-    let sidebarContainerContainer = appendDiv(doc, "sidebar-container-container", browser, true);
+  function createSidebar(doc, loading, window) {
+    let sidebarContainerContainer = appendDiv(doc, "sidebar-container-container", window.browser, true);
     sidebarContainerContainer.classList.add("shyfox-container");
     let sidebarContainer = appendDiv(doc, "sidebar-container", sidebarContainerContainer);
 
@@ -140,7 +195,11 @@
     let sidebarContent = appendDiv(doc, "sidebar-content", sidebarContainer);
     sidebarContent.appendChild(doc.getElementById("sidebar-main"));
     sidebarContent.appendChild(doc.getElementById("sidebar-box"));
+  }
 
+  function initSidebar(doc, loading, window) {
+    let sidebarContainer = doc.getElementById("sidebar-container");
+    let sidebarContent = doc.getElementById("sidebar-content");
 
     let sidebarConfig = UC_API.Prefs.get("shyfox.sidebar-config").value.split(",").reverse();
 
@@ -169,9 +228,13 @@
 
 
 
-  function initTopbar(doc, loading, window) {
+  function createTopbar(doc, loading, window) {
     let topbarContainer = appendDiv(doc, "topbar-container", window.gNavToolbox, window.browser);
     topbarContainer.classList.add("shyfox-container");
+  }
+
+  function initTopbar(doc, loading, window) {
+    let topbarContainer = doc.getElementById("topbar-container");
 
     let topbarConfig = UC_API.Prefs.get("shyfox.topbar-config").value.split(",");
 
@@ -183,6 +246,7 @@
       if (panel === "tabbar") {
         topbarContainer.appendChild(tabbar);
       } else if (panel === "navbar") {
+        undoCompactNavbar(doc);
         topbarContainer.appendChild(navbar);
       } else if (panel === "bmbar") {
         topbarContainer.appendChild(bmbar);
@@ -192,9 +256,32 @@
 
 
 
-  function initBottombar(doc, loading, window) {
-
+  function createBottombar(doc, loading, window) {
+    let btmbarContainer = appendDiv(doc, "btmbar-container", window.gNavToolbox, window.browser.nextSibling);
+    btmbarContainer.classList.add("shyfox-container");
   }
+
+  function initBottombar(doc, loading, window) {
+    let btmbarContainer = doc.getElementById("btmbar-container");
+
+    let btmbarConfig = UC_API.Prefs.get("shyfox.btmbar-config").value.split(",");
+
+    let tabbar = doc.getElementById("TabsToolbar");
+    let navbar = doc.getElementById("nav-bar");
+    let bmbar = doc.getElementById("PersonalToolbar");
+
+    for (let panel of btmbarConfig) {
+      if (panel === "tabbar") {
+        btmbarContainer.appendChild(tabbar);
+      } else if (panel === "navbar") {
+        undoCompactNavbar(doc);
+        btmbarContainer.appendChild(navbar);
+      } else if (panel === "bmbar") {
+        btmbarContainer.appendChild(bmbar);
+      }
+    }
+  }
+
 
 
   function toggleNavbar(doc) {
