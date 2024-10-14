@@ -88,37 +88,37 @@
 
   function initPanelsConfig(pref) {
     // array of existing containers
-    let panels = ["sidebar", "topbar", "btmbar"];
+    let containers = ["sidebar", "topbar", "btmbar"];
 
     // valid panels for each container (keys must be identical to panels array)
     let validValues = {
-      sidebar: ["navbar", "bmbar"],
+      sidebar: ["navbar", "bmbar", "content"],
       topbar: ["tabbar", "navbar", "bmbar"],
       btmbar: ["tabbar", "navbar", "bmbar"]
     };
 
     // remove duplicate panels if called by pref listener
-    if (pref) panelsCfgRmDuplicate(pref, panels);
+    if (pref) panelsCfgRmDuplicate(pref, containers);
     // remove invalid panels
-    panelsCfgRmInvalid(panels, validValues);
+    panelsCfgRmInvalid(containers, validValues);
   }
 
-  function panelsCfgRmInvalid(panels, validValues) {
+  function panelsCfgRmInvalid(containers, validValues) {
     // create object containing all containers with their configs
-    let allConfigs = Object.fromEntries(panels.map(panel => [panel, UC_API.Prefs.get(`shyfox.${panel}-config`).value.split(",")]));
+    let allConfigs = Object.fromEntries(containers.map(container => [container, UC_API.Prefs.get(`shyfox.${container}-config`).value.split(",")]));
     // filter allConfigs to have only valid values
-    let filteredConfigs = Object.fromEntries(Object.entries(allConfigs).map(([box, panels]) => [box, panels.filter(panel => validValues[box].includes(panel))]));
+    let filteredConfigs = Object.fromEntries(Object.entries(allConfigs).map(([container, panels]) => [container, panels.filter(panel => validValues[container].includes(panel))]));
     // save containers configs
-    Object.entries(filteredConfigs).forEach(([key, value]) => UC_API.Prefs.set(`shyfox.${key}-config`, value.join(",")));
+    Object.entries(filteredConfigs).forEach(([container, panels]) => UC_API.Prefs.set(`shyfox.${container}-config`, panels.join(",")));
   }
 
-  function panelsCfgRmDuplicate(pref, panels) {
+  function panelsCfgRmDuplicate(pref, containers) {
     // get array of panels for last modified container
     let changedConfig = pref.value.split(",");
     // get key from pref name of last modified container
     let changedPref = pref.name.replace(/shyfox\.(.*)-config/, "$1");
     // create object containing all containers with their configs
-    let allConfigs = Object.fromEntries(panels.map(panel => [panel, UC_API.Prefs.get(`shyfox.${panel}-config`).value.split(",")]));
+    let allConfigs = Object.fromEntries(containers.map(container => [container, UC_API.Prefs.get(`shyfox.${container}-config`).value.split(",")]));
     // create object containing all containers with their configs except last modified container
     let otherConfigs = Object.fromEntries(Object.entries(allConfigs).filter(([key, value]) => key != changedPref));
     // remove panels added to the last container from the other containers
@@ -153,6 +153,8 @@
         loading.then(() => doCompactNavbar(doc));
       } else if (panel === "bmbar") {
         sidebarContainer.insertBefore(bmbar, sidebarContainer.firstChild);
+      } else if (panel === "content") {
+        sidebarContainer.insertBefore(sidebarContent, sidebarContainer.firstChild);
       }
     }
 
