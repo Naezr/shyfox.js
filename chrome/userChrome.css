@@ -17,25 +17,25 @@
 
 /* browser margin */
 :root {
-  --browser-margin-top: 0px;
+  --browser-margin-top: 4px;
 
   &:not(:has(#topbar-container > *:not([hidden], [collapsed="true"]), #toolbar-menubar:not([inactive]))) {
     --browser-margin-top: var(--general-margin);
   }
 
-  --browser-margin-bottom: 0px;
+  --browser-margin-bottom: 4px;
 
   &:not(:has(#btmbar-container > *:not([hidden], [collapsed="true"]))) {
     --browser-margin-bottom: var(--general-margin);
   }
 
-  --browser-margin-left: 0px;
+  --browser-margin-left: 1px;
 
   &:not(:has(#sidebar-container-container:not([positionend]))) {
     --browser-margin-left: var(--general-margin);
   }
 
-  --browser-margin-right: 0px;
+  --browser-margin-right: 1px;
 
   &:not(:has(#sidebar-container-container[positionend])) {
     --browser-margin-right: var(--general-margin);
@@ -155,9 +155,11 @@ toolbar :is(#movable-menu-button, #movable-extensions-button) {
   display: flex;
   flex-direction: row;
   margin-top: calc(var(--browser-margin-top) / 2);
+
   &:not(:has(#sidebar-container > :is(#navbar-container, toolbar):first-child)) {
     margin-top: var(--browser-margin-top);
   }
+
   margin-bottom: var(--browser-margin-bottom);
 }
 
@@ -179,11 +181,11 @@ toolbar :is(#movable-menu-button, #movable-extensions-button) {
 }
 
 #sidebar-container-container:not([positionend]) {
-  padding-left: calc(var(--general-margin) / 2);
+  padding-left: 2px;
 }
 
 #sidebar-container-container[positionend] {
-  padding-right: calc(var(--general-margin) / 2);
+  padding-right: 2px;
 }
 
 
