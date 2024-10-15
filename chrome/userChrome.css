@@ -17,13 +17,13 @@
 
 /* browser margin */
 :root {
-  --browser-margin-top: 4px;
+  --browser-margin-top: 0px;
 
   &:has(#topbar-container[empty]):has(#toolbar-menubar[inactive]) {
     --browser-margin-top: var(--general-margin);
   }
 
-  --browser-margin-bottom: 4px;
+  --browser-margin-bottom: 0px;
 
   &:has(#btmbar-container[empty]) {
     --browser-margin-bottom: var(--general-margin);
@@ -121,7 +121,7 @@
 #top-buttonbox-container {
   position: fixed;
   display: none;
-  height: 40px;
+  height: 30px;
   pointer-events: none;
   left: 0;
   right: 0;
@@ -130,7 +130,7 @@
   .titlebar-buttonbox-container {
     display: flex !important;
     pointer-events: all;
-    border-radius: var(--panel-border-radius);
+    border-radius: 100px;
     overflow: hidden;
 
     &:hover {
