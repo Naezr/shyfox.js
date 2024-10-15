@@ -201,6 +201,7 @@
 
 
   function initButtonBox(doc, loading, window) {
+    // add titlebar buttons to bookmarks toolbar
     let menubarButtonBox = doc.querySelector("#toolbar-menubar .titlebar-buttonbox-container");
     let bmbarButtonBox = menubarButtonBox.cloneNode(true);
     doc.getElementById("PersonalToolbar").appendChild(bmbarButtonBox);

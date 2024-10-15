@@ -14,13 +14,13 @@
   /* not pinned tabs */
   .tabbrowser-tab:not([pinned]) {
     --tab-min-height: 32px !important;
-
+    
+    margin-block: 4px;
+    
     &,
     &>* {
       max-height: 32px !important;
     }
-
-    margin-block: 3px !important;
 
     .tab-content {
       padding: 0px !important;
