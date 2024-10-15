@@ -78,13 +78,18 @@
       flex-grow: 1 !important;
       min-width: calc(100% / var(--max-tabs-in-row)) !important;
       width: auto !important;
-      height: 42px !important;
+      height: 46px !important;
     }
 
     tab .tab-background {
       border-radius: var(--panel-border-radius) !important;
       height: auto !important;
-      margin: 2.5px !important;
+      margin-inline: 2.5px !important;
+      margin-block: 0 5px !important;
+    }
+    
+    tab .tab-content{
+      margin-block: 0 5px !important;
     }
 
     .tab-icon-image,

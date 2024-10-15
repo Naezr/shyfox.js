@@ -154,7 +154,11 @@ toolbar :is(#movable-menu-button, #movable-extensions-button) {
 #sidebar-container-container {
   display: flex;
   flex-direction: row;
-  margin-block: var(--browser-margin-top) var(--browser-margin-bottom);
+  margin-top: calc(var(--browser-margin-top) / 2);
+  &:not(:has(#sidebar-container > :is(#navbar-container, toolbar):first-child)) {
+    margin-top: var(--browser-margin-top);
+  }
+  margin-bottom: var(--browser-margin-bottom);
 }
 
 /* main sidebar container styles */
@@ -175,11 +179,11 @@ toolbar :is(#movable-menu-button, #movable-extensions-button) {
 }
 
 #sidebar-container-container:not([positionend]) {
-  padding-left: var(--general-margin);
+  padding-left: calc(var(--general-margin) / 2);
 }
 
 #sidebar-container-container[positionend] {
-  padding-right: var(--general-margin);
+  padding-right: calc(var(--general-margin) / 2);
 }
 
 
