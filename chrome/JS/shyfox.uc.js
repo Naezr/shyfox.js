@@ -205,6 +205,31 @@
     let menubarButtonBox = doc.querySelector("#toolbar-menubar .titlebar-buttonbox-container");
     let bmbarButtonBox = menubarButtonBox.cloneNode(true);
     doc.getElementById("PersonalToolbar").appendChild(bmbarButtonBox);
+    // create top buttonbox
+    let topButtonBoxContainer = appendDiv(doc, "top-buttonbox-container", window.gNavToolbox, true);
+    let topButtonBoxSpacer = appendDiv(doc, "top-buttonbox-spacer", topButtonBoxContainer);
+    let topButtonBox = menubarButtonBox.cloneNode(true);
+    topButtonBoxContainer.appendChild(topButtonBox);
+  }
+
+  function addEmptyAttribute(element) {
+    element.addEventListener('DOMSubtreeModified', function () {
+      // check children
+      var children = element.children;
+      var allCollapsed = true;
+      for (var i = 0; i < children.length; i++) {
+        if (!children[i].hasAttribute('collapsed') || children[i].getAttribute('collapsed') !== 'true') {
+          allCollapsed = false;
+          break;
+        }
+      }
+      // add or remove 'empty' attribute
+      if (children.length === 0 || allCollapsed) {
+        element.setAttribute('empty', '');
+      } else {
+        element.removeAttribute('empty');
+      }
+    });
   }
 
 
@@ -257,6 +282,7 @@
   function createTopbar(doc, loading, window) {
     let topbarContainer = appendDiv(doc, "topbar-container", window.gNavToolbox, window.browser);
     topbarContainer.classList.add("shyfox-container");
+    addEmptyAttribute(topbarContainer);
   }
 
   function initTopbar(doc, loading, window) {
@@ -285,6 +311,7 @@
   function createBottombar(doc, loading, window) {
     let btmbarContainer = appendDiv(doc, "btmbar-container", window.gNavToolbox, window.browser.nextSibling);
     btmbarContainer.classList.add("shyfox-container");
+    addEmptyAttribute(btmbarContainer);
   }
 
   function initBottombar(doc, loading, window) {

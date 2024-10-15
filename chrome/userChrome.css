@@ -19,25 +19,25 @@
 :root {
   --browser-margin-top: 4px;
 
-  &:not(:has(#topbar-container > *:not([hidden], [collapsed="true"]), #toolbar-menubar:not([inactive]))) {
+  &:has(#topbar-container[empty]):has(#toolbar-menubar[inactive]) {
     --browser-margin-top: var(--general-margin);
   }
 
   --browser-margin-bottom: 4px;
 
-  &:not(:has(#btmbar-container > *:not([hidden], [collapsed="true"]))) {
+  &:has(#btmbar-container[empty]) {
     --browser-margin-bottom: var(--general-margin);
   }
 
   --browser-margin-left: 1px;
 
-  &:not(:has(#sidebar-container-container:not([positionend]))) {
+  &:has(#sidebar-container-container[positionend]) {
     --browser-margin-left: var(--general-margin);
   }
 
   --browser-margin-right: 1px;
 
-  &:not(:has(#sidebar-container-container[positionend])) {
+  &:has(#sidebar-container-container:not([positionend])) {
     --browser-margin-right: var(--general-margin);
   }
 
@@ -53,6 +53,14 @@
   border-radius: var(--panel-border-radius) !important;
   box-shadow: var(--content-area-shadow) !important;
   overflow: hidden !important;
+}
+
+#browser {
+  -moz-window-dragging: drag;
+
+  &>* {
+    -moz-window-dragging: no-drag;
+  }
 }
 
 /* main box height */
@@ -96,11 +104,11 @@
   padding: 0px !important;
 }
 
-:is(#topbar-container, #btmbar-container):has(>*:not([collapsed="true"])) {
+:is(#topbar-container, #btmbar-container):not([empty]) {
   padding: 3px;
 }
 
-:is(#topbar-container, #btmbar-container):not(:has(>*:not([collapsed="true"]))) {
+:is(#topbar-container, #btmbar-container)[empty] {
   display: none;
 }
 
@@ -108,6 +116,36 @@
 .titlebar-spacer,
 .titlebar-buttonbox-container {
   display: none !important;
+}
+
+#top-buttonbox-container {
+  position: fixed;
+  display: none;
+  height: 40px;
+  pointer-events: none;
+  left: 0;
+  right: 0;
+  z-index: 999;
+
+  .titlebar-buttonbox-container {
+    display: flex !important;
+    pointer-events: all;
+    border-radius: var(--panel-border-radius);
+    overflow: hidden;
+
+    &:hover {
+      background: var(--arrowpanel-background);
+    }
+
+    &:not(:hover) {
+      height: var(--general-margin);
+      opacity: .2;
+    }
+  }
+
+  #top-buttonbox-spacer {
+    flex: 1;
+  }
 }
 
 :root:has(#toolbar-menubar[inactive]) {
@@ -118,11 +156,19 @@
       display: flex !important;
     }
   }
+
+  &:has(#topbar-container[empty]) {
+    #top-buttonbox-container {
+      display: flex;
+    }
+  }
 }
 
 #toolbar-menubar .titlebar-buttonbox-container {
   display: flex !important;
 }
+
+
 
 /* new buttons */
 toolbar :is(#movable-menu-button, #movable-extensions-button) {
@@ -399,12 +445,6 @@ toolbar :is(#movable-menu-button, #movable-extensions-button) {
 
 /* new sidebar panel */
 .wrapper:has(.tools-and-extensions) {
-  -moz-window-dragging: drag !important;
-
-  & * {
-    -moz-window-dragging: no-drag !important;
-  }
-
   &:not( :has(.expanded-button)) {
     justify-items: center !important;
   }
