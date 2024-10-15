@@ -213,23 +213,19 @@
   }
 
   function addEmptyAttribute(element) {
-    element.addEventListener('DOMSubtreeModified', function () {
-      // check children
+    function check() {
       var children = element.children;
       var allCollapsed = true;
-      for (var i = 0; i < children.length; i++) {
-        if (!children[i].hasAttribute('collapsed') || children[i].getAttribute('collapsed') !== 'true') {
+      for (var i = 0; i < children.length; i++)
+        if (!children[i].hasAttribute('collapsed') || children[i].getAttribute('collapsed') !== 'true')
           allCollapsed = false;
-          break;
-        }
-      }
       // add or remove 'empty' attribute
-      if (children.length === 0 || allCollapsed) {
+      if (children.length === 0 || allCollapsed)
         element.setAttribute('empty', '');
-      } else {
-        element.removeAttribute('empty');
-      }
-    });
+      else element.removeAttribute('empty');
+    }
+    check();
+    element.addEventListener('DOMSubtreeModified', check);
   }
 
 
