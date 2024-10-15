@@ -32,4 +32,8 @@
       height: calc(2 * var(--toolbarbutton-inner-padding) + 16px);
     }
   }
+
+  toolbar :is(#movable-menu-button, #movable-extensions-button) {
+    padding: 0 var(--toolbarbutton-outer-padding) !important;
+  }
 }

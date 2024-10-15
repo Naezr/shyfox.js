@@ -1,3 +1,9 @@
+/*================
+
+Overrides
+
+=================*/
+
 * {
   --tab-border-radius: 10px !important;
   --toolbarbutton-border-radius: 10px !important;
@@ -15,7 +21,12 @@
   --panel-border: 0.01px solid var(--chrome-content-separator-color);
 }
 
-/* browser margin */
+/*================
+
+Browser
+
+=================*/
+
 :root {
   --browser-margin-top: 0px;
 
@@ -112,7 +123,12 @@
   display: none;
 }
 
-/* titlebar buttonbox */
+/*================
+
+Buttonbox
+
+=================*/
+
 .titlebar-spacer,
 .titlebar-buttonbox-container {
   display: none !important;
@@ -169,13 +185,12 @@
 }
 
 
+/*================
 
-/* new buttons */
-toolbar :is(#movable-menu-button, #movable-extensions-button) {
-  padding: 0 var(--toolbarbutton-outer-padding) !important;
-}
+Menubar
 
-/* menubar */
+=================*/
+
 #toolbar-menubar:not([inactive]) {
   max-height: 30px !important;
   min-height: 30px !important;
@@ -195,6 +210,12 @@ toolbar :is(#movable-menu-button, #movable-extensions-button) {
 }
 
 
+
+/*================
+
+Sidebar
+
+=================*/
 
 /* mainest sidebar container styles */
 #sidebar-container-container {
@@ -303,7 +324,12 @@ toolbar :is(#movable-menu-button, #movable-extensions-button) {
 
 
 
-/* navbar compact mode */
+/*================
+
+Compact navbar
+
+=================*/
+
 #navbar-container {
   #nav-bar {
     display: flex !important;
@@ -366,7 +392,12 @@ toolbar :is(#movable-menu-button, #movable-extensions-button) {
 
 
 
-/* customizing page styles */
+/*================
+
+Customization
+
+=================*/
+
 :root[customizing] {
   #vertical-tabs {
     min-width: 0px !important;
